@@ -11,21 +11,24 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerMapper customerMapper;
+
     List<CustomerDTO> getClients() {
         return customerRepository.findAll()
                 .stream()
-                .map(CustomerDTO::fromEntity)
+                .map(customerMapper::toDto)
                 .toList();
     }
 
     public Optional<CustomerDTO> getClientById(Long id) {
         return customerRepository.findById(id)
-                .map(CustomerDTO::fromEntity);
+                .map(customerMapper::toDto);
     }
 
     public CustomerDTO addClient(CustomerDTO addedCustomer) {
-        Customer savedCustomer = customerRepository.save(addedCustomer.toEntity());
-        return CustomerDTO.fromEntity(savedCustomer);
+        Customer savedCustomer = customerRepository.save(customerMapper.toEntity(addedCustomer));
+        return customerMapper.toDto(savedCustomer);
     }
     
     public void deleteById(Long id) {customerRepository.deleteById(id);}

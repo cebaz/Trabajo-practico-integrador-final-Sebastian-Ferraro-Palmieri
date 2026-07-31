@@ -11,18 +11,27 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-    List<Product> getAccounts(){return productRepository.findAll();};
+    @Autowired
+    private ProductMapper productMapper;
 
-    public Optional<Product> getAccountById(Long id) {
-        return productRepository.findById(id);
+    List<ProductDto> getAccounts() {
+        return productRepository.findAll()
+                .stream()
+                .map(productMapper::toDto)
+                .toList();
     }
 
-    public Product addAccount(Product addedClient) {
-        return productRepository.save(addedClient);
+    public Optional<ProductDto> getAccountById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::toDto);
+    }
+
+    public ProductDto addAccount(ProductDto addedClient) {
+        Product savedProduct = productRepository.save(productMapper.toEntity(addedClient));
+        return productMapper.toDto(savedProduct);
     }
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 }
-

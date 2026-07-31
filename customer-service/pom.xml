@@ -28,6 +28,8 @@
     </scm>
     <properties>
         <java.version>21</java.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <org.projectlombok.mapstruct.binding.version>0.2.0</org.projectlombok.mapstruct.binding.version>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +88,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -127,8 +134,18 @@
                         <configuration>
                             <annotationProcessorPaths>
                                 <path>
+                                    <groupId>org.mapstruct</groupId>
+                                    <artifactId>mapstruct-processor</artifactId>
+                                    <version>${org.mapstruct.version}</version>
+                                </path>
+                                <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
+                                </path>
+                                <path>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok-mapstruct-binding</artifactId>
+                                    <version>${org.projectlombok.mapstruct.binding.version}</version>
                                 </path>
                             </annotationProcessorPaths>
                         </configuration>
@@ -142,8 +159,18 @@
                         <configuration>
                             <annotationProcessorPaths>
                                 <path>
+                                    <groupId>org.mapstruct</groupId>
+                                    <artifactId>mapstruct-processor</artifactId>
+                                    <version>${org.mapstruct.version}</version>
+                                </path>
+                                <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
+                                </path>
+                                <path>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok-mapstruct-binding</artifactId>
+                                    <version>${org.projectlombok.mapstruct.binding.version}</version>
                                 </path>
                             </annotationProcessorPaths>
                         </configuration>

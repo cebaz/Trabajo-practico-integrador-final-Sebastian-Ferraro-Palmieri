@@ -19,17 +19,17 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public List<Product> getAccounts() {
+    public List<ProductDto> getAccounts() {
         return productService.getAccounts();
     }
 
     @PostMapping("/agregar")
-    public Product agregar(@RequestBody Product addedProduct) {
+    public ProductDto agregar(@RequestBody ProductDto addedProduct) {
         return productService.addAccount(addedProduct);
     }
 
     @GetMapping("/{id}")
-    public Optional<Product> getAccountById(@PathVariable Long id) {
+    public Optional<ProductDto> getAccountById(@PathVariable Long id) {
         return productService.getAccountById(id);
     }
 
