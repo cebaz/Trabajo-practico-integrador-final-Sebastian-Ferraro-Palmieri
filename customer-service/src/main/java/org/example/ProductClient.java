@@ -9,6 +9,6 @@ import java.util.Map;
 @FeignClient(name = "product-service")
 public interface ProductClient {
 
-    @GetMapping("/products")
-    List<Map<String, Object>> getProducts();
+    @GetMapping("/accounts")
+    List<Map<String, Object>> getAccounts();
 }
