@@ -1,14 +1,11 @@
-spring:
-  application:
-  name: config.server
-  cloud:
-
-config:
-  server:
-  git:
-  uri: https://github.com/Pedroottaviano/config-server|
-  default-Label: main
-
 Server:
   port: 8888
 
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/cebaz/config-repository.git

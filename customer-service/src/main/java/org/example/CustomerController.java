@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping({"/customers", "/clientes"})
 public class CustomerController {
 
     private final ProductClient productClient;
@@ -28,10 +28,10 @@ public class CustomerController {
 
     @GetMapping("/{id}/products")
     public List<Map<String, Object>> getCustomerProducts(@PathVariable Long id) {
-        Customer customer = customerRepository.findById(id)
+        customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado"));
 
-        return productClient.getAccounts();
+        return productClient.getProductsByCustomerId(id);
     }
 
 

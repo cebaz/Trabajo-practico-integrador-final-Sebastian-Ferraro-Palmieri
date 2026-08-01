@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableFeignClients
 @EnableJpaRepositories(basePackages = "org.example")
 @EntityScan(basePackages = "org.example")
-@EnableDiscoveryClient//(basePackages = "org.example.customer.feign")
+@EnableDiscoveryClient
 public class CustomerServiceApplication {
 
     public static void main(String[] args) {
