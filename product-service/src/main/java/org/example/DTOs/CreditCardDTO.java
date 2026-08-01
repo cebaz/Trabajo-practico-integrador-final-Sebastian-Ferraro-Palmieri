@@ -1,4 +1,4 @@
-package org.example;
+package org.example.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-public class LoanDTO extends ProductDTO {
+public class CreditCardDTO extends ProductDTO {
 
-    private Long amount;
-    private Double interestRate;
-    private Integer installments;
+    private String cardNumber;
+    private Long creditLimit;
+    private Long availableLimit;
+    private Integer closingDay;
 }

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

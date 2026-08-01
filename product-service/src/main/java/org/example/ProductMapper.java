@@ -1,5 +1,10 @@
 package org.example;
 
+import org.example.DTOs.AccountDTO;
+import org.example.DTOs.CreditCardDTO;
+import org.example.DTOs.InvestmentDTO;
+import org.example.DTOs.LoanDTO;
+import org.example.DTOs.ProductDTO;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
