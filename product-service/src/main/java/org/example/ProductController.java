@@ -1,5 +1,6 @@
 package org.example;
 
+import jakarta.validation.Valid;
 import org.example.DTOs.AccountDTO;
 import org.example.DTOs.CreditCardDTO;
 import org.example.DTOs.InvestmentDTO;
@@ -45,21 +46,21 @@ public class ProductController {
 
     @PostMapping("/products/accounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountDTO createAccount(@RequestBody AccountDTO dto) {
+    public AccountDTO createAccount(@Valid @RequestBody AccountDTO dto) {
         return productService.createAccount(dto);
     }
 
     @PostMapping("/products/credit-cards")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreditCardDTO createCreditCard(@RequestBody CreditCardDTO dto) {return productService.createCreditCard(dto);}
+    public CreditCardDTO createCreditCard(@Valid @RequestBody CreditCardDTO dto) {return productService.createCreditCard(dto);}
 
     @PostMapping("/products/loans")
     @ResponseStatus(HttpStatus.CREATED)
-    public LoanDTO createLoan(@RequestBody LoanDTO dto) {
+    public LoanDTO createLoan(@Valid @RequestBody LoanDTO dto) {
         return productService.createLoan(dto);
     }
 
     @PostMapping("/products/investments")
     @ResponseStatus(HttpStatus.CREATED)
-    public InvestmentDTO createInvestment(@RequestBody InvestmentDTO dto) {return productService.createInvestment(dto);}
+    public InvestmentDTO createInvestment(@Valid @RequestBody InvestmentDTO dto) {return productService.createInvestment(dto);}
 }

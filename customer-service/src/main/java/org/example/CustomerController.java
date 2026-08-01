@@ -1,6 +1,7 @@
 package org.example;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class CustomerController {
     }
 
     @PostMapping("/agregar")
-    public CustomerDTO agregar(@RequestBody CustomerDTO addedCustomer) {
+    public CustomerDTO agregar(@Valid @RequestBody CustomerDTO addedCustomer) {
         return customerService.addClient(addedCustomer);
     }
 

@@ -2,6 +2,9 @@ package org.example.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +30,21 @@ import java.time.LocalDate;
 public abstract class ProductDTO {
 
     private Long accountId;
+
+    @NotNull(message = "El número de cuenta es obligatorio")
+    @Positive(message = "El número de cuenta debe ser positivo")
     private Long accountNumber;
+
+    @NotBlank(message = "El tipo de producto es obligatorio")
     private String type;
+
+    @NotBlank(message = "El estado es obligatorio")
     private String status;
+
     private LocalDate createdAt;
     private LocalDate lastModificationDate;
+
+    @NotNull(message = "El identificador del cliente es obligatorio")
+    @Positive(message = "El identificador del cliente debe ser positivo")
     private Long customerId;
 }
