@@ -65,7 +65,7 @@ class ProductDiscriminatorTest {
         entityManager.flush();
 
         Object[] stored = (Object[]) entityManager.getEntityManager()
-                .createNativeQuery("select product_type, type from account where account_nur = 99")
+                .createNativeQuery("select product_type, type from product where account_nur = 99")
                 .getSingleResult();
 
         assertThat(stored).containsExactly("ACCOUNT", "CAJA_AHORRO");
