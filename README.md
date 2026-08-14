@@ -12,6 +12,14 @@ El sistema está compuesto por cuatro proyectos independientes que trabajan de f
 
 El proyecto está conformado por los siguientes módulos:
 
+## Componentes y Puertos
+|    Componente    | Puerto |
+|------------------|--------|
+| Config Server    |  8888  |
+| Eureka Server    |  8761  |
+| Customer Service |  8081  |
+| Product Service  |  8082  |
+
 ### customer-service
 
 Servicio principal encargado de la gestión de clientes.
@@ -65,6 +73,289 @@ Flujo de funcionamiento:
 4. `product-service` responde con la información solicitada.
 5. `customer-service` devuelve la respuesta al consumidor de la API.
 
+## Endpoints principales
+Customer Service — http://localhost:8081
+Obtener todos los clientes
+
+GET /customers
+
+Response:
+
+[
+  {
+    "id": 1,
+    "nombre": "Juan",
+    "apellidoORazonSocial": "Pérez",
+    "documentoCuit": "20123456789",
+    "direccion": "Av. Corrientes 123",
+    "telefono": "1123456789",
+    "email": "juan.perez@email.com",
+    "tipoCliente": "PERSONA",
+    "activo": true,
+    "saldoPendiente": 0.0,
+    "fechaAlta": "2026-08-01"
+  }
+]
+Obtener un cliente por ID
+
+GET /customers/{id}
+
+Ejemplo: /customers/1
+
+Response:
+
+{
+  "id": 1,
+  "nombre": "Juan",
+  "apellidoORazonSocial": "Pérez",
+  "documentoCuit": "20123456789",
+  "direccion": "Av. Corrientes 123",
+  "telefono": "1123456789",
+  "email": "juan.perez@email.com",
+  "tipoCliente": "PERSONA",
+  "activo": true,
+  "saldoPendiente": 0.0,
+  "fechaAlta": "2026-08-01"
+}
+Crear un cliente
+
+POST /customers/agregar
+
+Request:
+
+{
+  "nombre": "Juan",
+  "apellidoORazonSocial": "Pérez",
+  "documentoCuit": "20123456789",
+  "direccion": "Av. Corrientes 123",
+  "telefono": "1123456789",
+  "email": "juan.perez@email.com",
+  "tipoCliente": "PERSONA",
+  "activo": true,
+  "saldoPendiente": 0.0,
+  "fechaAlta": "2026-08-01"
+}
+
+Response:
+
+{
+  "id": 1,
+  "nombre": "Juan",
+  "apellidoORazonSocial": "Pérez",
+  "documentoCuit": "20123456789",
+  "direccion": "Av. Corrientes 123",
+  "telefono": "1123456789",
+  "email": "juan.perez@email.com",
+  "tipoCliente": "PERSONA",
+  "activo": true,
+  "saldoPendiente": 0.0,
+  "fechaAlta": "2026-08-01"
+}
+Actualizar un cliente
+
+PUT /customers/editar/{id}
+
+Ejemplo: /customers/editar/1
+
+Request:
+
+{
+  "nombre": "Juan",
+  "apellidoORazonSocial": "Pérez Gómez",
+  "documentoCuit": "20123456789",
+  "direccion": "Av. Corrientes 456",
+  "telefono": "1198765432",
+  "email": "juan.gomez@email.com",
+  "tipoCliente": "PERSONA",
+  "activo": true,
+  "saldoPendiente": 0.0,
+  "fechaAlta": "2026-08-01"
+}
+
+Response:
+
+{
+  "id": 1,
+  "nombre": "Juan",
+  "apellidoORazonSocial": "Pérez Gómez",
+  "documentoCuit": "20123456789",
+  "direccion": "Av. Corrientes 456",
+  "telefono": "1198765432",
+  "email": "juan.gomez@email.com",
+  "tipoCliente": "PERSONA",
+  "activo": true,
+  "saldoPendiente": 0.0,
+  "fechaAlta": "2026-08-01"
+}
+Eliminar un cliente
+
+DELETE /customers/eliminar/{id}
+
+Ejemplo: /customers/eliminar/1
+
+Response:
+
+HTTP 200 OK sin contenido.
+
+Obtener productos de un cliente
+
+GET /customers/{id}/products
+
+Ejemplo: /customers/1/products
+
+Este endpoint utiliza OpenFeign para consultar product-service.
+
+Response:
+
+[
+  {
+    "accountId": 1,
+    "accountNumber": 123456,
+    "type": "ACCOUNT",
+    "status": "ACTIVE",
+    "createdAt": "2026-08-01",
+    "lastModificationDate": "2026-08-01",
+    "customerId": 1
+  }
+]
+Product Service — http://localhost:8082
+Obtener todos los productos
+
+GET /products
+
+Response:
+
+[
+  {
+    "accountId": 1,
+    "accountNumber": 123456,
+    "type": "ACCOUNT",
+    "status": "ACTIVE",
+    "createdAt": "2026-08-01",
+    "lastModificationDate": "2026-08-01",
+    "customerId": 1
+  }
+]
+Obtener un producto por ID
+
+GET /products/{id}
+
+Ejemplo: /products/1
+
+Response:
+
+{
+  "accountId": 1,
+  "accountNumber": 123456,
+  "type": "ACCOUNT",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-01",
+  "lastModificationDate": "2026-08-01",
+  "customerId": 1
+}
+Obtener productos de un cliente
+
+GET /products/customer/{customerId}
+
+Ejemplo: /products/customer/1
+
+Response:
+
+[
+  {
+    "accountId": 1,
+    "accountNumber": 123456,
+    "type": "ACCOUNT",
+    "status": "ACTIVE",
+    "createdAt": "2026-08-01",
+    "lastModificationDate": "2026-08-01",
+    "customerId": 1
+  }
+]
+Crear una cuenta
+
+POST /products/accounts
+
+Request:
+
+{
+  "accountNumber": 123456,
+  "type": "ACCOUNT",
+  "status": "ACTIVE",
+  "customerId": 1,
+  "balance": 50000,
+  "currency": "ARS"
+}
+
+Response:
+
+{
+  "accountId": 1,
+  "accountNumber": 123456,
+  "type": "ACCOUNT",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-01",
+  "lastModificationDate": "2026-08-01",
+  "customerId": 1,
+  "balance": 50000,
+  "currency": "ARS"
+}
+Crear una tarjeta de crédito
+
+POST /products/credit-cards
+
+Request:
+
+{
+  "accountNumber": 123457,
+  "type": "CREDIT_CARD",
+  "status": "ACTIVE",
+  "customerId": 1,
+  "cardNumber": "4500123456789012",
+  "creditLimit": 500000,
+  "availableLimit": 500000,
+  "closingDay": 10
+}
+Crear un préstamo
+
+POST /products/loans
+
+Request:
+
+{
+  "accountNumber": 123458,
+  "type": "LOAN",
+  "status": "ACTIVE",
+  "customerId": 1,
+  "amount": 1000000,
+  "interestRate": 50.0,
+  "installments": 12
+}
+Crear una inversión
+
+POST /products/investments
+
+Request:
+
+{
+  "accountNumber": 123459,
+  "type": "INVESTMENT",
+  "status": "ACTIVE",
+  "customerId": 1,
+  "investedAmount": 500000,
+  "annualRate": 40.0,
+  "expirationDate": "2027-08-01"
+}
+Eliminar un producto
+
+DELETE /products/eliminar/{id}
+
+Ejemplo: /products/eliminar/1
+
+Response:
+
+HTTP 200 OK sin contenido.
+
 ## Tecnologías utilizadas
 
 * Java
@@ -74,6 +365,11 @@ Flujo de funcionamiento:
 * Spring Cloud Netflix Eureka
 * OpenFeign
 * Maven
+
+## Documentación de API
+Customer Service: http://localhost:8081/swagger-ui/index.html
+Product Service: http://localhost:8082/swagger-ui/index.html
+Eureka Server: http://localhost:8761/swagger-ui/index.html
 
 ## Estructura del proyecto
 
@@ -115,6 +411,10 @@ Una vez iniciados, ambos microservicios se registrarán automáticamente en Eure
 * Uso de DTOs para la comunicación.
 * Uso de mapeadores entre entidades y DTOs.
 * Manejo de excepciones.
+
+### Repositorio de configuración
+El Config Server obtiene la configuración desde:
+https://github.com/cebaz/config-repository.git
 
 ## Autor
 
