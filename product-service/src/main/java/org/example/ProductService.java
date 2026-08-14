@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -24,7 +23,6 @@ public class ProductService {
     @Autowired
     private ProductMapper productMapper;
 
-    // ---------- Métodos existentes (misma firma) ----------
 
     List<ProductDTO> getAccounts() {
         return productRepository.findAll()
@@ -40,14 +38,12 @@ public class ProductService {
                 .toList();
     }
 
-    public Optional<ProductDTO> getAccountById(Long id) {
+    public ProductDTO getAccountById(Long id) {
         return productRepository.findById(id)
-                .map(productMapper::toDto);
+                .map(productMapper::toDto)
+                .orElseThrow(() -> new org.example.exception.ProductNotFoundException("Producto no encontrado"));
     }
 
-    /**
-     * Alta genérica: despacha al create del subtipo real del DTO.
-     */
     public ProductDTO addAccount(ProductDTO addedClient) {
         if (addedClient == null) return null;
         return switch (addedClient) {
@@ -61,10 +57,12 @@ public class ProductService {
     }
 
     public void deleteById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new org.example.exception.ProductNotFoundException("Producto no encontrado");
+        }
         productRepository.deleteById(id);
     }
 
-    // ---------- Altas por tipo ----------
 
     public AccountDTO createAccount(AccountDTO dto) {
         Account entity = productMapper.toAccountEntity(dto);
@@ -90,12 +88,6 @@ public class ProductService {
         return productMapper.toInvestmentDto(productRepository.save(entity));
     }
 
-     /**
-     * type es NOT NULL en la tabla: si el DTO no lo trae, se completa con el
-     * tipo que corresponde al método invocado. Si lo trae, se respeta (puede ser
-     * un subtipo de negocio como CAJA_AHORRO). El discriminador de la jerarquía
-     * es otra columna, product_type, y la escribe Hibernate.
-     **/
     private void applyDefaultType(Product entity, String defaultType) {
         if (entity.getType() == null || entity.getType().isBlank()) {
             entity.setType(defaultType);

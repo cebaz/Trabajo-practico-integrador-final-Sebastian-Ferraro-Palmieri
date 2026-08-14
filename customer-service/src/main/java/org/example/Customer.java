@@ -28,10 +28,10 @@ public class Customer {
     private String nombre;
 
     @Column(name = "apellido_o_razon_social")
-    private String apellidoOOrazonSocial;
+    private String apellidoORazonSocial;
 
     @Column(name = "documento_cuit")
-    private String documento_cuit;
+    private String documentoCuit;
 
     @Column(name = "direccion")
     private String direccion;

@@ -20,10 +20,10 @@ public class CustomerDTO {
     private String nombre;
 
     @NotBlank(message = "La razón social es obligatoria")
-    private String apellidoOOrazonSocial;
+    private String apellidoORazonSocial;
 
     @NotBlank(message = "El documento es obligatorio")
-    private String documento_cuit;
+    private String documentoCuit;
 
     @NotBlank(message = "La dirección es obligatoria")
     private String direccion;
@@ -53,8 +53,8 @@ public class CustomerDTO {
         return new CustomerDTO(
                 customer.getId(),
                 customer.getNombre(),
-                customer.getApellidoOOrazonSocial(),
-                customer.getDocumento_cuit(),
+                customer.getApellidoORazonSocial(),
+                customer.getDocumentoCuit(),
                 customer.getDireccion(),
                 customer.getTelefono(),
                 customer.getEmail(),
@@ -69,8 +69,8 @@ public class CustomerDTO {
         return new Customer(
                 id,
                 nombre,
-                apellidoOOrazonSocial,
-                documento_cuit,
+                apellidoORazonSocial,
+                documentoCuit,
                 direccion,
                 telefono,
                 email,

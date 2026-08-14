@@ -1,18 +1,26 @@
 package org.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import org.example.ProductResponseDTO;
 
 @Service
 public class CustomerService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private CustomerMapper customerMapper;
+    private final CustomerRepository customerRepository;
+    private final ProductClient productClient;
+    private final CustomerMapper customerMapper;
+
+    public CustomerService(
+            CustomerRepository customerRepository,
+            ProductClient productClient,
+            CustomerMapper customerMapper) {
+        this.customerRepository = customerRepository;
+        this.productClient = productClient;
+        this.customerMapper = customerMapper;
+    }
 
     List<CustomerDTO> getClients() {
         return customerRepository.findAll()
@@ -21,15 +29,37 @@ public class CustomerService {
                 .toList();
     }
 
-    public Optional<CustomerDTO> getClientById(Long id) {
+    public CustomerDTO getClientById(Long id) {
         return customerRepository.findById(id)
-                .map(customerMapper::toDto);
+                .map(customerMapper::toDto)
+                .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado"));
     }
 
     public CustomerDTO addClient(CustomerDTO addedCustomer) {
         Customer savedCustomer = customerRepository.save(customerMapper.toEntity(addedCustomer));
         return customerMapper.toDto(savedCustomer);
     }
-    
-    public void deleteById(Long id) {customerRepository.deleteById(id);}
+
+    public CustomerDTO updateClient(Long id, CustomerDTO updatedCustomer) {
+        Customer existingCustomer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado"));
+
+        updatedCustomer.setId(id);
+        Customer customerToSave = customerMapper.toEntity(updatedCustomer);
+        Customer savedCustomer = customerRepository.save(customerToSave);
+        return customerMapper.toDto(savedCustomer);
+    }
+
+    public List<ProductResponseDTO> getCustomerProducts(Long id) {
+        customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado"));
+        return productClient.getProductsByCustomerId(id);
+    }
+
+    public void deleteById(Long id) {
+        if (!customerRepository.existsById(id)) {
+            throw new CustomerNotFoundException("Cliente no encontrado");
+        }
+        customerRepository.deleteById(id);
+    }
 }

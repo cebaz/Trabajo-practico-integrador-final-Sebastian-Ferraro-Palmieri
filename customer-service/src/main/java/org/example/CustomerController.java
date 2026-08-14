@@ -2,42 +2,32 @@ package org.example;
 
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import org.example.ProductResponseDTO;
 
 @RestController
-@RequestMapping({"/customers", "/clientes"})
+@RequestMapping({"/customers"})
 public class CustomerController {
 
-    private final ProductClient productClient;
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
-    public CustomerController(ProductClient productClient, CustomerRepository customerRepository) {
-        this.productClient = productClient;
-        this.customerRepository = customerRepository;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     @GetMapping("/{id}/products")
-    public List<Map<String, Object>> getCustomerProducts(@PathVariable Long id) {
-        customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado"));
-
-        return productClient.getProductsByCustomerId(id);
+    public List<ProductResponseDTO> getCustomerProducts(@PathVariable Long id) {
+        return customerService.getCustomerProducts(id);
     }
-
-
-    @Autowired
-    private CustomerService customerService;
 
     @GetMapping
     public List<CustomerDTO> getClients() {
@@ -50,8 +40,13 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public Optional<CustomerDTO> getClientById(@PathVariable Long id) {
+    public CustomerDTO getClientById(@PathVariable Long id) {
         return customerService.getClientById(id);
+    }
+
+    @PutMapping("editar/{id}")
+    public CustomerDTO updateClient(@PathVariable Long id, @Valid @RequestBody CustomerDTO updatedCustomer) {
+        return customerService.updateClient(id, updatedCustomer);
     }
 
     @DeleteMapping("/eliminar/{id}")
